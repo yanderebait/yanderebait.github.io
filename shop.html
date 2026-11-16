@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop | yanderebait</title>
+<meta name="description" content="Hand-forged display blades and cosplay props from yanderebait, London. Adults only, sold person to person after an ID check.">
+<meta name="theme-color" content="#CFE6D3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@800&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Same colours as the links page. Change them in every page together. */
+    --page: #CFE6D3;
+    --page-deep: #A7CDAE;
+    --oxblood: #5A0F1E;
+    --steel: #CDD2D7;
+    --steel-bright: #EEF1F3;
+    --steel-dark: #2A3140;
+    --steel-mid: #55607A;
+    --ink: #1F2328;
+    --copper: #B0683A;
+    --straw: #D9A441;
+    --display: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+
+  html { background: var(--page); }
+
+  body {
+    margin: 0;
+    min-block-size: 100svh;
+    padding: clamp(1.25rem, 5vw, 3.5rem) clamp(1.1rem, 6vw, 5rem) 3rem;
+    font-family: "Zen Kaku Gothic New", "Hiragino Sans", "Segoe UI", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    color: var(--oxblood);
+  }
+
+  a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: 0.18em; }
+  :is(a, button):focus-visible { outline: 3px solid var(--oxblood); outline-offset: 3px; }
+
+  .sr-only {
+    position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+
+  .page { max-inline-size: 76rem; }
+
+  .home {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+    border-block-end: 3px solid var(--copper);
+  }
+  .home:hover { border-block-end-color: var(--oxblood); }
+
+  h1 {
+    margin: 1.5rem 0 0;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2.6rem, 12vw, 5.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+  }
+
+  .lede { margin: 1.1rem 0 0; max-inline-size: 36rem; font-size: 1.125rem; }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 3rem;
+    padding: 0.5rem 1.1rem;
+    border: 2px solid var(--oxblood);
+    border-radius: 2px;
+    background: var(--oxblood);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .button.quiet { background: transparent; color: var(--oxblood); }
+  .lede + .button { margin-block-start: 1.1rem; }
+
+  /* A plain message: shop not open, nothing listed, or could not load. */
+  .notice {
+    margin: 2rem 0 0;
+    max-inline-size: 36rem;
+    padding: 0.9rem 1rem;
+    border: 2px dashed var(--oxblood);
+    border-radius: 2px;
+  }
+  .notice p { margin: 0 0 0.6rem; }
+  .notice p:last-child { margin: 0; }
+
+  /* ---------- the shelf ---------- */
+
+  .shelf {
+    list-style: none;
+    margin: clamp(2rem, 5vw, 3rem) 0 0;
+    padding: 0;
+    display: grid;
+    /* two to a row on a phone, more as the screen widens */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.75rem), 1fr));
+    gap: clamp(0.75rem, 2.5vw, 1.75rem);
+  }
+  @media (min-width: 40rem) {
+    .shelf { grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); }
+  }
+
+  .piece a {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    block-size: 100%;
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 2px;
+  }
+
+  .shot {
+    display: block;
+    aspect-ratio: 4 / 5;
+    background: var(--steel-dark);
+    overflow: hidden;
+  }
+  .shot img { display: block; inline-size: 100%; block-size: 100%; object-fit: cover; }
+  .shot .none {
+    display: grid; place-items: center; block-size: 100%;
+    color: var(--steel); font-size: 0.9375rem;
+  }
+  .piece[data-status="sold"] .shot img { filter: grayscale(0.7); }
+  @media (prefers-reduced-motion: no-preference) {
+    .shot img { transition: scale 0.4s ease; }
+    .piece a:hover .shot img { scale: 1.03; }
+  }
+
+  /* the plate under each piece: steel, with a ground edge */
+  .plate {
+    display: grid;
+    align-content: start;
+    gap: 0.45rem;
+    padding: 0.8rem 0.9rem 1.15rem;
+    background: var(--steel);
+    border-block-end: 0.45rem solid var(--steel-bright);
+  }
+  .piece a:hover .plate, .piece a:focus-visible .plate { border-block-end-color: var(--straw); }
+  .title { font-weight: 700; font-size: 1.125rem; line-height: 1.25; overflow-wrap: anywhere; }
+  .terms { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.4rem 0.75rem; }
+  .price { font-family: var(--display); font-weight: 800; font-size: 1.5rem; line-height: 1; }
+  .price.ask { font-family: inherit; font-weight: 700; font-size: 1rem; }
+
+  /* status stamp: always says the status in words, colour is extra */
+  .stamp {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border: 2px solid var(--ink);
+    border-radius: 2px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.3;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+  .stamp[data-status="for_sale"]    { background: var(--oxblood); border-color: var(--oxblood); color: #fff; }
+  .stamp[data-status="reserved"]    { background: var(--straw); }
+  .stamp[data-status="coming_soon"] { border-style: dashed; }
+  .stamp[data-status="sold"]        { background: var(--steel-dark); border-color: var(--steel-dark); color: #fff; }
+
+  /* ---------- one piece, opened ---------- */
+
+  dialog {
+    inline-size: min(64rem, calc(100vw - 1.5rem));
+    max-block-size: calc(100dvh - 1.5rem);
+    padding: 0;
+    border: 3px solid var(--oxblood);
+    border-radius: 2px;
+    background: var(--page);
+    color: var(--oxblood);
+  }
+  dialog:modal { overscroll-behavior: contain; }
+  dialog::backdrop {
+    background: rgb(42 49 64 / 0.78);
+    overflow: hidden;
+    overscroll-behavior: contain;
+  }
+
+  .sheet { display: grid; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 56rem) {
+    .sheet { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; }
+  }
+
+  /* stays at the top of the sheet while it scrolls */
+  .closebar { position: sticky; inset-block-start: 0; block-size: 0; z-index: 3; }
+  .close {
+    position: absolute;
+    inset: 0.5rem 0.5rem auto auto;
+    min-inline-size: 3rem;
+    min-block-size: 3rem;
+    padding: 0 0.8rem;
+    border: 2px solid var(--ink);
+    border-radius: 2px;
+    background: var(--steel-bright);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .gallery { position: relative; background: var(--steel-dark); }
+  .track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+  }
+  @media (prefers-reduced-motion: no-preference) { .track { scroll-behavior: smooth; } }
+  .slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    max-block-size: 80dvh;
+    inline-size: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width: 56rem) { .slide { aspect-ratio: 4 / 5; } }
+  /* pinned to the slide, so a tall photo can never stretch the gallery */
+  .slide :is(img, video) { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: contain; }
+  .slide .none { color: var(--steel); }
+
+  .turn {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.4rem;
+    pointer-events: none;
+  }
+  .turn button {
+    pointer-events: auto;
+    touch-action: manipulation;
+    min-inline-size: 3rem;
+    min-block-size: 3rem;
+    border: 2px solid var(--ink);
+    border-radius: 2px;
+    background: var(--steel-bright);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem; padding: 0.35rem 0.5rem 0.6rem; }
+  .dots button {
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    touch-action: manipulation;
+    display: grid;
+    place-items: center;
+  }
+  .dots button::before {
+    content: "";
+    inline-size: 0.6rem;
+    block-size: 0.6rem;
+    rotate: 45deg;
+    border: 2px solid var(--steel);
+  }
+  .dots button[aria-current="true"]::before { background: var(--straw); border-color: var(--straw); }
+  .dots button:focus-visible { outline: 3px solid var(--straw); outline-offset: 0; }
+
+  .details { padding: 1.25rem clamp(1rem, 3vw, 1.75rem) 1.75rem; }
+  .details h2 {
+    margin: 0 3.5rem 0.6rem 0;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+  @media (min-width: 56rem) { .details { padding-block-start: 4rem; } .details h2 { margin-inline-end: 0; } }
+  .details .terms { justify-content: flex-start; gap: 0.5rem 1rem; }
+  .details .price { font-size: 2rem; }
+  .words { margin: 1rem 0 0; white-space: pre-line; overflow-wrap: anywhere; }
+  .state { margin: 1rem 0 0; font-weight: 700; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin: 1.25rem 0 0; }
+  .copied { font-weight: 700; font-size: 0.9375rem; }
+
+  footer { margin-block-start: 3rem; font-size: 0.9375rem; }
+  footer p { margin: 0 0 0.4rem; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <a class="home" href="./">yanderebait</a>
+    <h1>Shop</h1>
+    <p class="lede">Display blades and cosplay props, forged by hand in London. Adults only. There's no checkout button, so read how buying works first.</p>
+    <a class="button quiet" href="how-to-buy.html">How to buy</a>
+  </header>
+
+  <main>
+    <div class="notice" id="notice" role="status"><p>Opening the shop…</p></div>
+    <ul class="shelf" id="shelf" hidden></ul>
+  </main>
+
+  <footer>
+    <p>Sold by DraftCore, London.</p>
+    <p><a href="./">Back to all my links</a></p>
+  </footer>
+</div>
+
+<dialog id="piece" aria-labelledby="piece-title" closedby="any">
+  <form method="dialog" class="closebar"><button class="close" autofocus>Close</button></form>
+  <div class="sheet">
+    <section class="gallery" id="gallery" aria-roledescription="carousel" aria-label="Photos and videos of this piece">
+      <div class="track" id="track"></div>
+      <div class="turn" id="turn">
+        <button type="button" id="prev" aria-label="Previous photo">&lt;</button>
+        <button type="button" id="next" aria-label="Next photo">&gt;</button>
+      </div>
+      <div class="dots" id="dots"></div>
+      <p class="sr-only" id="where" role="status"></p>
+    </section>
+    <div class="details">
+      <h2 id="piece-title"></h2>
+      <p class="terms"><span class="price" id="piece-price"></span><span class="stamp" id="piece-stamp"></span></p>
+      <p class="words" id="piece-words"></p>
+      <p class="state" id="piece-state"></p>
+      <p class="actions">
+        <a class="button" id="piece-buy" href="how-to-buy.html">How to buy this</a>
+        <button type="button" class="button quiet" id="piece-link">Copy link to this piece</button>
+        <span class="copied" id="piece-copied" role="status"></span>
+      </p>
+    </div>
+  </div>
+</dialog>
+
+<script src="vendor/supabase.js"></script>
+<script src="shop-config.js"></script>
+<script src="shop-common.js"></script>
+<script>
+(() => {
+  'use strict';
+  const { connect, mediaUrl, formatPrice, statusLabel, statusRank } = window.Shop;
+
+  const notice = document.getElementById('notice');
+  const shelf = document.getElementById('shelf');
+  const dialog = document.getElementById('piece');
+  const track = document.getElementById('track');
+  const dots = document.getElementById('dots');
+  const turn = document.getElementById('turn');
+  const where = document.getElementById('where');
+  let pieces = [];
+  let slideCount = 0;
+  let current = 0;
+
+  // What the opened piece says under its description, by status.
+  const STATE_LINE = {
+    for_sale: '',
+    reserved: "Someone has first dibs on this one. If it falls through, it goes back on sale.",
+    coming_soon: "Not ready yet. I'll post on X and Instagram when it is.",
+    not_for_sale: "Not for sale. It's here to show what I make.",
+    sold: 'Sold.'
+  };
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  function say(...paragraphs) {
+    notice.replaceChildren(...paragraphs.map((p) => (typeof p === 'string' ? el('p', '', p) : p)));
+    notice.hidden = false;
+  }
+
+  function cover(piece) {
+    const first = (piece.media || [])[0];
+    if (!first) return '';
+    if (first.kind === 'video') return first.poster ? mediaUrl(first.poster) : '';
+    return mediaUrl(first.thumb || first.path);
+  }
+
+  function priceNode(pence, className) {
+    const node = el('span', className, formatPrice(pence));
+    if (pence === null || pence === undefined) node.classList.add('ask');
+    return node;
+  }
+
+  function renderShelf() {
+    shelf.replaceChildren(...pieces.map((piece) => {
+      const li = el('li', 'piece');
+      li.dataset.status = piece.status;
+      const a = el('a');
+      a.href = '#piece-' + piece.id;
+
+      const shot = el('span', 'shot');
+      const src = cover(piece);
+      if (src) {
+        const img = el('img');
+        img.src = src;
+        img.alt = '';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        shot.append(img);
+      } else {
+        shot.append(el('span', 'none', 'No photo yet'));
+      }
+
+      const plate = el('span', 'plate');
+      const terms = el('span', 'terms');
+      const stamp = el('span', 'stamp', statusLabel(piece.status));
+      stamp.dataset.status = piece.status;
+      terms.append(priceNode(piece.price_pence, 'price'), stamp);
+      plate.append(el('span', 'title', piece.title), terms);
+
+      a.append(shot, plate);
+      li.append(a);
+      return li;
+    }));
+    shelf.hidden = pieces.length === 0;
+  }
+
+  // ----- the opened piece -----
+
+  function goTo(index) {
+    if (!slideCount) return;
+    current = (index + slideCount) % slideCount;
+    track.scrollTo({ left: current * track.clientWidth });
+    markCurrent();
+  }
+
+  function markCurrent() {
+    [...dots.children].forEach((dot, i) => dot.setAttribute('aria-current', String(i === current)));
+    [...track.children].forEach((slide, i) => {
+      const video = slide.querySelector('video');
+      if (video && i !== current) video.pause();
+    });
+    where.textContent = slideCount > 1 ? `Showing ${current + 1} of ${slideCount}` : '';
+  }
+
+  function settle() {
+    if (!slideCount || !track.clientWidth) return;
+    const index = Math.round(track.scrollLeft / track.clientWidth);
+    if (index !== current) { current = index; markCurrent(); }
+  }
+  if ('onscrollend' in window) {
+    track.addEventListener('scrollend', settle);
+  } else {
+    let timer;
+    track.addEventListener('scroll', () => { clearTimeout(timer); timer = setTimeout(settle, 120); });
+  }
+
+  document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+
+  function fill(piece) {
+    const media = piece.media || [];
+    slideCount = Math.max(media.length, 1);
+    current = 0;
+
+    const slides = media.map((item, i) => {
+      const slide = el('div', 'slide');
+      slide.setAttribute('role', 'group');
+      slide.setAttribute('aria-roledescription', 'slide');
+      slide.setAttribute('aria-label', `${i + 1} of ${media.length}`);
+      if (item.kind === 'video') {
+        const video = el('video');
+        video.src = mediaUrl(item.path);
+        video.controls = true;
+        video.playsInline = true;
+        video.preload = 'metadata';
+        if (item.poster) video.poster = mediaUrl(item.poster);
+        video.setAttribute('aria-label', `${piece.title}, video`);
+        slide.append(video);
+      } else {
+        const img = el('img');
+        img.src = mediaUrl(item.path);
+        img.alt = `${piece.title}, photo ${i + 1}`;
+        img.decoding = 'async';
+        if (i > 0) img.loading = 'lazy';
+        slide.append(img);
+      }
+      return slide;
+    });
+    if (!slides.length) {
+      const empty = el('div', 'slide');
+      empty.append(el('span', 'none', 'No photo yet'));
+      slides.push(empty);
+    }
+    track.replaceChildren(...slides);
+    track.scrollLeft = 0;
+
+    dots.replaceChildren(...(media.length > 1 ? media.map((item, i) => {
+      const dot = el('button');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Show ${item.kind === 'video' ? 'video' : 'photo'} ${i + 1} of ${media.length}`);
+      dot.addEventListener('click', () => goTo(i));
+      return dot;
+    }) : []));
+    turn.hidden = media.length < 2;
+    dots.hidden = media.length < 2;
+    markCurrent();
+
+    document.getElementById('piece-title').textContent = piece.title;
+    const price = document.getElementById('piece-price');
+    price.textContent = formatPrice(piece.price_pence);
+    price.classList.toggle('ask', piece.price_pence === null);
+    const stamp = document.getElementById('piece-stamp');
+    stamp.textContent = statusLabel(piece.status);
+    stamp.dataset.status = piece.status;
+    const words = document.getElementById('piece-words');
+    words.textContent = piece.description || '';
+    words.hidden = !piece.description;
+    const state = document.getElementById('piece-state');
+    state.textContent = STATE_LINE[piece.status] || '';
+    state.hidden = !state.textContent;
+    document.getElementById('piece-buy').hidden = !(piece.status === 'for_sale' || piece.status === 'reserved');
+    document.getElementById('piece-copied').textContent = '';
+  }
+
+  function openFromHash() {
+    const match = /^#piece-(.+)$/.exec(location.hash);
+    const piece = match && pieces.find((p) => p.id === match[1]);
+    if (piece) {
+      fill(piece);
+      if (!dialog.open) dialog.showModal();
+    } else if (dialog.open) {
+      dialog.close();
+    }
+  }
+  window.addEventListener('hashchange', openFromHash);
+
+  dialog.addEventListener('close', () => {
+    track.querySelectorAll('video').forEach((video) => video.pause());
+    if (location.hash.startsWith('#piece-')) {
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  });
+
+  // Click outside to close, where the browser does not do it for us.
+  if (!('closedBy' in HTMLDialogElement.prototype)) {
+    const outside = (e) => {
+      const r = dialog.getBoundingClientRect();
+      return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+    };
+    let pressedOutside = false;
+    dialog.addEventListener('pointerdown', (e) => { pressedOutside = outside(e); });
+    dialog.addEventListener('pointerup', (e) => { if (pressedOutside && outside(e)) dialog.close(); });
+  }
+
+  document.getElementById('piece-link').addEventListener('click', async () => {
+    const copied = document.getElementById('piece-copied');
+    try {
+      await navigator.clipboard.writeText(location.href);
+      copied.textContent = 'Link copied';
+    } catch {
+      copied.textContent = 'Copy failed. Copy it from the address bar.';
+    }
+  });
+
+  // ----- load -----
+
+  async function load() {
+    const client = connect();
+    if (!client) {
+      say("The shop isn't open yet.", "The first pieces are on the anvil. I'll post on X and Instagram when they're ready.");
+      return;
+    }
+    const { data, error } = await client
+      .from('pieces')
+      .select('id, title, description, price_pence, status, media, created_at')
+      .neq('status', 'draft')
+      .order('created_at', { ascending: false });
+    if (error) {
+      console.error(error);
+      say("The shop didn't load.", 'Check your connection and reload the page. If it keeps happening, message me and tell me.');
+      return;
+    }
+    pieces = (data || []).sort((a, b) => statusRank(a.status) - statusRank(b.status));
+    if (!pieces.length) {
+      say('Nothing on the shelf right now.', "The next pieces are on the anvil. I'll post on X and Instagram when they're ready.");
+      return;
+    }
+    notice.hidden = true;
+    renderShelf();
+    openFromHash();
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
