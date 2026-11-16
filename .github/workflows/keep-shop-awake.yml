@@ -1,0 +1,27 @@
+# The shop's free back end (Supabase) pauses itself after a week with no visits.
+# This asks it for one piece every morning so that never happens.
+name: Keep the shop awake
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ask the shop's back end for one piece
+        run: |
+          url=$(sed -n 's/.*supabaseUrl: *"\([^"]*\)".*/\1/p' shop-config.js)
+          key=$(sed -n 's/.*supabaseKey: *"\([^"]*\)".*/\1/p' shop-config.js)
+          if [ -z "$url" ] || [ -z "$key" ]; then
+            echo "The shop is not connected yet. Nothing to do."
+            exit 0
+          fi
+          curl --fail --silent --show-error "$url/rest/v1/pieces?select=id&limit=1" -H "apikey: $key" > /dev/null
+          echo "The shop's back end answered."
