@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yanderebait</title>
+<meta name="description" content="Knives, swords and a first cosplay build, made in London. Every yanderebait account in one place.">
+<meta name="theme-color" content="#F3CFD6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@800&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sakura: #F3CFD6;        /* page */
+    --sakura-deep: #E6AFBB;   /* rail shadow, dashed outlines */
+    --oxblood: #5A0F1E;       /* wordmark, text on pink */
+    --steel: #CDD2D7;         /* blade flat */
+    --steel-bright: #EEF1F3;  /* ground edge */
+    --steel-dark: #2A3140;    /* blued blade, rail */
+    --ink: #1F2328;           /* text on steel */
+    --copper: #B0683A;        /* wire-wrapped handle */
+    --copper-dark: #7C4322;
+    --straw: #D9A441;         /* temper colours, cool to hot */
+    --temper-purple: #6B3FA0;
+    --temper-blue: #2F6FB5;
+
+    --tip: 2.5rem;            /* length of the slanted point */
+    --grip: 3.25rem;          /* handle length */
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { background: var(--sakura); }
+
+  body {
+    margin: 0;
+    min-block-size: 100svh;
+    padding: clamp(1.5rem, 6vw, 4.5rem) clamp(1.1rem, 6vw, 5rem) 3rem;
+    font-family: "Zen Kaku Gothic New", "Hiragino Sans", "Segoe UI", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 1.0625rem;
+    line-height: 1.45;
+    color: var(--oxblood);
+  }
+
+  .page { max-inline-size: 44rem; }
+
+  h1 {
+    margin: 0;
+    font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+    font-weight: 800;
+    font-size: clamp(2.6rem, 13vw, 6.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    overflow-wrap: anywhere;
+  }
+
+  .about {
+    margin: 1.1rem 0 0;
+    max-inline-size: 30rem;
+    font-size: 1.125rem;
+  }
+
+  /* ---------- the rack ---------- */
+
+  .rack {
+    list-style: none;
+    margin: clamp(2rem, 6vw, 3.25rem) 0 0;
+    padding: 0.25rem 0 0.25rem 0.9rem;
+    border-inline-start: 0.4rem solid var(--steel-dark);
+    box-shadow: -0.25rem 0 0 var(--sakura-deep);
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .rack > li { inline-size: var(--len, 100%); }
+
+  /* A knife: copper-wrapped handle, then a blade with a slanted point. */
+  .knife {
+    display: flex;
+    inline-size: 100%;
+    min-block-size: 4.25rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-align: start;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  div.knife { cursor: default; }
+
+  .knife:focus-visible {
+    outline: 3px solid var(--oxblood);
+    outline-offset: 4px;
+  }
+
+  .grip {
+    flex: none;
+    inline-size: var(--grip);
+    border-radius: 0.5rem 0 0 0.5rem;
+    background:
+      repeating-linear-gradient(100deg, var(--copper) 0 0.34rem, var(--copper-dark) 0.34rem 0.44rem);
+  }
+
+  .blade {
+    position: relative;
+    flex: 1;
+    min-inline-size: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 0.75rem;
+    padding: 0.7rem calc(var(--tip) + 1rem) 1.1rem 1rem;
+    background: var(--steel);
+    clip-path: polygon(0 0, calc(100% - var(--tip)) 0, 100% 100%, 0 100%);
+  }
+
+  /* The ground edge. It takes on temper colours when the knife is picked. */
+  .blade::before,
+  .blade::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    block-size: 0.5rem;
+  }
+  .blade::before { background: var(--steel-bright); }
+  .blade::after {
+    background: linear-gradient(90deg, var(--straw) 0 22%, #B5651D 40%, var(--temper-purple) 62%, var(--temper-blue) 85%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .knife:is(a, button):hover .blade::after,
+  .knife:focus-visible .blade::after { opacity: 1; }
+
+  .name { font-weight: 700; font-size: 1.1875rem; }
+  .what { font-size: 1rem; }
+
+  /* Unforged stock: the shop, which is not open yet. */
+  .billet {
+    min-block-size: 4.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    border: 2px dashed var(--oxblood);
+    border-radius: 2px;
+  }
+
+  /* ---------- Discord copy ---------- */
+
+  .copy { position: relative; display: inline-flex; align-items: center; gap: 0.6rem; }
+
+  .copy-button {
+    min-inline-size: 24px;
+    min-block-size: 2rem;
+    padding: 0.2rem 0.7rem;
+    border: 2px solid var(--ink);
+    border-radius: 2px;
+    background: var(--steel-bright);
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .copy-button:hover { background: #fff; }
+  .copy-button:focus-visible { outline: 3px solid var(--oxblood); outline-offset: 2px; }
+  .copy-button[data-copied] { border-color: #1E6B3A; }
+  .copy-button[data-failed] { border-color: var(--oxblood); }
+
+  .tip-msg { font-size: 0.9375rem; font-weight: 700; opacity: 0; transition: opacity 0.2s; }
+  .copy-button:is([data-copied], [data-failed]) + .tip-msg { opacity: 1; }
+
+  #discord-name { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 1rem; }
+
+  footer { margin-block-start: 2.5rem; font-size: 0.9375rem; }
+
+  /* One moment on load: each knife is drawn out from the rail. */
+  @media (prefers-reduced-motion: no-preference) {
+    .rack > li {
+      animation: draw 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+      animation-delay: calc(var(--i) * 70ms + 120ms);
+    }
+    @keyframes draw {
+      from { clip-path: inset(0 100% 0 0); }
+      to   { clip-path: inset(0 0 0 0); }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blade::after, .tip-msg { transition: none; }
+  }
+
+  @media (max-width: 34rem) {
+    .rack > li { inline-size: 100%; }
+    :root { --tip: 1.75rem; --grip: 2.25rem; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <h1>yanderebait</h1>
+  <p class="about">I forge knives and swords in a keg forge, and I'm building my first cosplay. London.</p>
+
+  <ul class="rack">
+    <li style="--i:0; --len:100%">
+      <a class="knife" href="https://x.com/yanderebait_" rel="me noopener">
+        <span class="grip" aria-hidden="true"></span>
+        <span class="blade"><span class="name">X</span><span class="what">Forge work and build updates</span></span>
+      </a>
+    </li>
+
+    <li style="--i:1; --len:92%">
+      <a class="knife" href="https://www.instagram.com/yanderebait/" rel="me noopener">
+        <span class="grip" aria-hidden="true"></span>
+        <span class="blade"><span class="name">Instagram</span><span class="what">Finished pieces and cosplay progress</span></span>
+      </a>
+    </li>
+
+    <li style="--i:2; --len:96%">
+      <div class="knife">
+        <span class="grip" aria-hidden="true"></span>
+        <span class="blade">
+          <span class="name">Discord</span>
+          <span id="discord-name">yanderebait_</span>
+          <span class="copy">
+            <button type="button" class="copy-button" command="--copy" commandfor="discord-name">Copy username</button>
+            <span class="tip-msg" role="status"></span>
+          </span>
+        </span>
+      </div>
+    </li>
+
+    <li style="--i:3; --len:84%">
+      <!-- EDIT: change this address once the GitHub account is renamed -->
+      <a class="knife" href="https://github.com/yanderebait" rel="me noopener">
+        <span class="grip" aria-hidden="true"></span>
+        <span class="blade"><span class="name">GitHub</span><span class="what">Things I've coded</span></span>
+      </a>
+    </li>
+
+    <li style="--i:4; --len:88%">
+      <!-- EDIT: swap this block for a knife link when the shop opens -->
+      <div class="billet"><span class="name">Shop</span><span class="what">Display blades and cosplay props. Not open yet.</span></div>
+    </li>
+
+  </ul>
+
+  <footer>Made by hand, including this page.</footer>
+</main>
+
+<script>
+  // ---- Copy the Discord username ----
+  const timers = new WeakMap();
+
+  function report(button, ok) {
+    const tip = button.nextElementSibling; // the role="status" message
+    clearTimeout(timers.get(button));
+    button.removeAttribute('data-copied');
+    button.removeAttribute('data-failed');
+    tip.textContent = '';
+    button.setAttribute(ok ? 'data-copied' : 'data-failed', '');
+    requestAnimationFrame(() => (tip.textContent = ok ? 'Copied' : 'Copy failed'));
+    timers.set(button, setTimeout(() => {
+      button.removeAttribute('data-copied');
+      button.removeAttribute('data-failed');
+      tip.textContent = '';
+    }, 2000));
+  }
+
+  async function copy(button, target) {
+    const text = target.innerText.trim();
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      report(button, true);
+    } catch {
+      report(button, false);
+    }
+  }
+
+  if ('CommandEvent' in window) {
+    // command events do not bubble, so listen in the capture phase
+    document.addEventListener('command', (event) => {
+      if (event.command === '--copy') copy(event.source, event.target);
+    }, true);
+  } else {
+    // Older browsers: same markup, wired by hand
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest('button[command]');
+      if (!button) return;
+      const target = document.getElementById(button.getAttribute('commandfor'));
+      if (!target) return;
+      const command = button.getAttribute('command');
+      if (command === '--copy') copy(button, target);
+    });
+  }
+</script>
+</body>
+</html>
