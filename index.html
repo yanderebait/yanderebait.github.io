@@ -4,23 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>yanderebait</title>
-<meta name="description" content="Knives, swords and a first cosplay build, made in London. Every yanderebait account in one place.">
-<meta name="theme-color" content="#F3CFD6">
+<meta name="description" content="Hand-forged knives and swords, and a first cosplay build, from London. Every yanderebait account in one place.">
+<meta name="theme-color" content="#CFE6D3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@800&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --sakura: #F3CFD6;        /* page */
-    --sakura-deep: #E6AFBB;   /* rail shadow, dashed outlines */
-    --oxblood: #5A0F1E;       /* wordmark, text on pink */
+    /* EDIT: the page colour. Pastel green now. For pastel red try #F2C9C4 with #E0A39C. */
+    --page: #CFE6D3;
+    --page-deep: #A7CDAE;     /* rail shadow, ground under the anvil */
+
+    --oxblood: #5A0F1E;       /* wordmark, text on the page */
     --steel: #CDD2D7;         /* blade flat */
     --steel-bright: #EEF1F3;  /* ground edge */
-    --steel-dark: #2A3140;    /* blued blade, rail */
+    --steel-dark: #2A3140;    /* blued blade, rail, anvil */
+    --steel-mid: #55607A;
     --ink: #1F2328;           /* text on steel */
     --copper: #B0683A;        /* wire-wrapped handle */
     --copper-dark: #7C4322;
     --straw: #D9A441;         /* temper colours, cool to hot */
+    --hot: #E8742A;
     --temper-purple: #6B3FA0;
     --temper-blue: #2F6FB5;
 
@@ -30,7 +34,7 @@
 
   *, *::before, *::after { box-sizing: border-box; }
 
-  html { background: var(--sakura); }
+  html { background: var(--page); }
 
   body {
     margin: 0;
@@ -43,7 +47,24 @@
     color: var(--oxblood);
   }
 
-  .page { max-inline-size: 44rem; }
+  .page {
+    max-inline-size: 80rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "forge" "rack" "foot";
+  }
+  .head { grid-area: head; }
+  .forge { grid-area: forge; }
+  .rack { grid-area: rack; }
+  footer { grid-area: foot; }
+
+  @media (min-width: 62rem) {
+    .page {
+      grid-template-columns: minmax(0, 44rem) minmax(16rem, 1fr);
+      grid-template-areas: "head forge" "rack forge" "foot forge";
+      column-gap: clamp(2rem, 5vw, 5rem);
+    }
+  }
 
   h1 {
     margin: 0;
@@ -57,7 +78,7 @@
 
   .about {
     margin: 1.1rem 0 0;
-    max-inline-size: 30rem;
+    max-inline-size: 34rem;
     font-size: 1.125rem;
   }
 
@@ -68,7 +89,7 @@
     margin: clamp(2rem, 6vw, 3.25rem) 0 0;
     padding: 0.25rem 0 0.25rem 0.9rem;
     border-inline-start: 0.4rem solid var(--steel-dark);
-    box-shadow: -0.25rem 0 0 var(--sakura-deep);
+    box-shadow: -0.25rem 0 0 var(--page-deep);
     display: grid;
     gap: 0.9rem;
   }
@@ -136,7 +157,7 @@
   .knife:focus-visible .blade::after { opacity: 1; }
 
   .name { font-weight: 700; font-size: 1.1875rem; }
-  .what { font-size: 1rem; }
+  .what { font-size: 1rem; min-inline-size: 0; }
 
   /* Unforged stock: the shop, which is not open yet. */
   .billet {
@@ -154,7 +175,7 @@
 
   .copy { position: relative; display: inline-flex; align-items: center; gap: 0.6rem; }
 
-  .copy-button {
+  .copy-button, .pause {
     min-inline-size: 24px;
     min-block-size: 2rem;
     padding: 0.2rem 0.7rem;
@@ -167,8 +188,8 @@
     font-weight: 700;
     cursor: pointer;
   }
-  .copy-button:hover { background: #fff; }
-  .copy-button:focus-visible { outline: 3px solid var(--oxblood); outline-offset: 2px; }
+  .copy-button:hover, .pause:hover { background: #fff; }
+  .copy-button:focus-visible, .pause:focus-visible { outline: 3px solid var(--oxblood); outline-offset: 2px; }
   .copy-button[data-copied] { border-color: #1E6B3A; }
   .copy-button[data-failed] { border-color: var(--oxblood); }
 
@@ -176,6 +197,62 @@
   .copy-button:is([data-copied], [data-failed]) + .tip-msg { opacity: 1; }
 
   #discord-name { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 1rem; }
+
+  /* ---------- the anvil ---------- */
+
+  .forge {
+    margin: 2rem 0 0;
+    display: grid;
+    justify-items: center;
+    gap: 0.75rem;
+    align-self: center;
+  }
+  .forge svg { inline-size: min(100%, 26rem); block-size: auto; overflow: visible; }
+  @media (max-width: 61.99rem) {
+    .forge svg { inline-size: min(100%, 17rem); }
+    .forge { justify-items: start; }
+  }
+
+  .hammer, .struck, .spark, .flash {
+    transform-box: view-box;
+  }
+  .hammer { transform-origin: 396px 148px; rotate: 16deg; }
+  .spark, .flash { opacity: 0; }
+
+  /* Motion is opt-in: with reduced motion the scene is a still picture. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hammer { animation: swing 1.7s infinite; }
+    .struck { animation: jolt 1.7s infinite; }
+    .flash  { animation: flash 1.7s infinite; }
+    .spark  { animation: spark 1.7s infinite; }
+    .forge.is-paused :is(.hammer, .struck, .flash, .spark) { animation-play-state: paused; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pause { display: none; }
+    .blade::after, .tip-msg { transition: none; }
+  }
+
+  @keyframes swing {
+    0%   { rotate: 14deg; animation-timing-function: ease-out; }
+    40%  { rotate: 42deg; animation-timing-function: cubic-bezier(0.6, 0, 0.9, 0.4); }
+    58%  { rotate: 0deg;  animation-timing-function: ease-out; }
+    65%  { rotate: 8deg;  animation-timing-function: ease-in-out; }
+    100% { rotate: 14deg; }
+  }
+  @keyframes jolt {
+    0%, 57%, 66%, 100% { translate: 0 0; }
+    60% { translate: 0 2.5px; }
+  }
+  @keyframes flash {
+    0%, 57% { opacity: 0; }
+    60% { opacity: 0.95; }
+    82%, 100% { opacity: 0; }
+  }
+  @keyframes spark {
+    0%, 57% { opacity: 0; translate: 0 0; }
+    59% { opacity: 1; translate: 0 0; }
+    88%, 100% { opacity: 0; translate: var(--dx) var(--dy); }
+  }
 
   footer { margin-block-start: 2.5rem; font-size: 0.9375rem; }
 
@@ -190,9 +267,6 @@
       to   { clip-path: inset(0 0 0 0); }
     }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .blade::after, .tip-msg { transition: none; }
-  }
 
   @media (max-width: 34rem) {
     .rack > li { inline-size: 100%; }
@@ -202,25 +276,76 @@
 </head>
 <body>
 <main class="page">
-  <h1>yanderebait</h1>
-  <p class="about">I forge knives and swords in a keg forge, and I'm building my first cosplay. London.</p>
+  <header class="head">
+    <h1>yanderebait</h1>
+    <p class="about">I hit hot steel with a hammer until it turns into a knife or a sword. The forge is an old keg lined with clay from my back garden. I'm also building my first cosplay, and I've bitten off more than I can chew. London.</p>
+  </header>
+
+  <figure class="forge">
+    <svg viewBox="0 0 420 372" role="img" aria-label="A hammer striking a glowing sword blank on an anvil">
+      <defs>
+        <linearGradient id="heat" x1="0" x2="1">
+          <stop offset="0" stop-color="#CDD2D7"/>
+          <stop offset="0.3" stop-color="#D9A441"/>
+          <stop offset="0.55" stop-color="#E8742A"/>
+          <stop offset="0.8" stop-color="#D9A441"/>
+          <stop offset="1" stop-color="#CDD2D7"/>
+        </linearGradient>
+      </defs>
+
+      <ellipse cx="210" cy="352" rx="160" ry="11" fill="var(--page-deep)"/>
+
+      <g class="struck">
+        <!-- stump -->
+        <rect x="128" y="262" width="164" height="90" rx="6" fill="var(--copper-dark)"/>
+        <rect x="128" y="262" width="164" height="14" rx="6" fill="var(--copper)"/>
+        <!-- anvil -->
+        <path fill="var(--steel-dark)" d="M70 196 L150 184 L330 184 L330 206 L286 206 C262 208 252 226 252 240 L290 262 L130 262 L168 240 C168 224 160 210 140 208 L110 208 C92 206 78 202 70 196 Z"/>
+        <path d="M150 187 L330 187" stroke="var(--steel-mid)" stroke-width="3"/>
+        <!-- sword blank: point to the left, tang to the right -->
+        <polygon points="104,178 140,170 330,170 330,184 140,184" fill="url(#heat)"/>
+        <rect x="330" y="174" width="56" height="7" rx="2" fill="var(--steel)"/>
+        <polygon class="flash" points="150,170 300,170 300,184 150,184" fill="#FFF1C2"/>
+      </g>
+
+      <!-- sparks, thrown from the strike point -->
+      <g fill="var(--hot)">
+        <circle class="spark" cx="226" cy="168" r="4"   style="--dx:-62px; --dy:-58px"/>
+        <circle class="spark" cx="226" cy="168" r="3"   style="--dx:-96px; --dy:-22px" fill="var(--straw)"/>
+        <circle class="spark" cx="226" cy="168" r="3.5" style="--dx:-34px; --dy:-88px" fill="var(--straw)"/>
+        <circle class="spark" cx="226" cy="168" r="3"   style="--dx:48px;  --dy:-74px"/>
+        <circle class="spark" cx="226" cy="168" r="2.5" style="--dx:-118px;--dy:-52px"/>
+        <circle class="spark" cx="226" cy="168" r="2.5" style="--dx:12px;  --dy:-104px" fill="var(--straw)"/>
+        <circle class="spark" cx="226" cy="168" r="3"   style="--dx:-76px; --dy:-96px"/>
+      </g>
+
+      <!-- hammer: pivots at the end of the handle -->
+      <g class="hammer">
+        <rect x="244" y="141" width="156" height="14" rx="7" fill="var(--copper)"/>
+        <rect x="372" y="141" width="28" height="14" rx="7" fill="var(--copper-dark)"/>
+        <rect x="204" y="124" width="46" height="46" rx="5" fill="var(--steel-dark)"/>
+        <rect x="204" y="160" width="46" height="10" rx="4" fill="var(--steel-mid)"/>
+      </g>
+    </svg>
+    <button type="button" class="pause">Pause the hammer</button>
+  </figure>
 
   <ul class="rack">
     <li style="--i:0; --len:100%">
       <a class="knife" href="https://x.com/yanderebait_" rel="me noopener">
         <span class="grip" aria-hidden="true"></span>
-        <span class="blade"><span class="name">X</span><span class="what">Forge work and build updates</span></span>
+        <span class="blade"><span class="name">X</span><span class="what">Forge work and cosplay updates. Sometimes shitposting.</span></span>
       </a>
     </li>
 
-    <li style="--i:1; --len:92%">
+    <li style="--i:1; --len:94%">
       <a class="knife" href="https://www.instagram.com/yanderebait/" rel="me noopener">
         <span class="grip" aria-hidden="true"></span>
-        <span class="blade"><span class="name">Instagram</span><span class="what">Finished pieces and cosplay progress</span></span>
+        <span class="blade"><span class="name">Instagram</span><span class="what">Forge work, stories, cosplay updates and other cool shit.</span></span>
       </a>
     </li>
 
-    <li style="--i:2; --len:96%">
+    <li style="--i:2; --len:88%">
       <div class="knife">
         <span class="grip" aria-hidden="true"></span>
         <span class="blade">
@@ -234,17 +359,16 @@
       </div>
     </li>
 
-    <li style="--i:3; --len:84%">
-      <!-- EDIT: change this address once the GitHub account is renamed -->
+    <li style="--i:3; --len:97%">
       <a class="knife" href="https://github.com/yanderebait" rel="me noopener">
         <span class="grip" aria-hidden="true"></span>
-        <span class="blade"><span class="name">GitHub</span><span class="what">Things I've coded</span></span>
+        <span class="blade"><span class="name">GitHub</span><span class="what">Vibe coded apps and cool shit. Please check licences before use.</span></span>
       </a>
     </li>
 
-    <li style="--i:4; --len:88%">
-      <!-- EDIT: swap this block for a knife link when the shop opens -->
-      <div class="billet"><span class="name">Shop</span><span class="what">Display blades and cosplay props. Not open yet.</span></div>
+    <li style="--i:4; --len:92%">
+      <!-- EDIT: swap this block for a knife link when the buying guide and shop exist -->
+      <div class="billet"><span class="name">Shop</span><span class="what">Please read the buying guide to make a purchase. Guide coming soon.</span></div>
     </li>
 
   </ul>
@@ -253,6 +377,14 @@
 </main>
 
 <script>
+  // ---- Pause or restart the hammer ----
+  const forge = document.querySelector('.forge');
+  const pause = document.querySelector('.pause');
+  pause.addEventListener('click', () => {
+    const paused = forge.classList.toggle('is-paused');
+    pause.textContent = paused ? 'Start the hammer' : 'Pause the hammer';
+  });
+
   // ---- Copy the Discord username ----
   const timers = new WeakMap();
 
