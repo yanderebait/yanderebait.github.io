@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Shop admin | yanderebait</title>
+<meta name="theme-color" content="#CFE6D3">
+<style>
+  :root {
+    --page: #CFE6D3;
+    --oxblood: #5A0F1E;
+    --steel: #CDD2D7;
+    --steel-bright: #EEF1F3;
+    --steel-dark: #2A3140;
+    --ink: #1F2328;
+    --straw: #D9A441;
+    --good: #1E6B3A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+
+  html { background: var(--page); }
+  body {
+    margin: 0;
+    min-block-size: 100svh;
+    padding: clamp(1rem, 4vw, 2.5rem) clamp(1rem, 5vw, 3rem) 4rem;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .page { max-inline-size: 46rem; margin-inline: auto; }
+
+  h1 { margin: 0; font-size: 1.75rem; line-height: 1.15; color: var(--oxblood); }
+  h2 { margin: 0 0 0.75rem; font-size: 1.375rem; line-height: 1.2; color: var(--oxblood); }
+  p { margin: 0 0 0.75rem; }
+  a { color: var(--oxblood); }
+
+  .top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-block-end: 1.25rem; }
+  .top nav { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+
+  .panel { background: var(--steel-bright); border: 2px solid var(--steel-dark); border-radius: 2px; padding: 1.1rem; }
+  .panel + .panel { margin-block-start: 1rem; }
+
+  button, .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 3rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--steel-dark);
+    border-radius: 2px;
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  button.main { background: var(--oxblood); border-color: var(--oxblood); color: #fff; }
+  button.danger { border-color: var(--oxblood); color: var(--oxblood); }
+  button.danger.sure { background: var(--oxblood); color: #fff; }
+  button:disabled { opacity: 0.55; cursor: not-allowed; }
+  :is(button, a, input, select, textarea):focus-visible { outline: 3px solid var(--oxblood); outline-offset: 2px; }
+
+  /* ---------- form fields: label above, helper text under the label ---------- */
+  .field { margin-block-end: 1.1rem; }
+  .field label, .field .label { display: block; font-weight: 700; margin-block-end: 0.2rem; }
+  .hint { display: block; font-size: 0.9375rem; margin-block-end: 0.3rem; }
+  input[type="text"], input[type="email"], input[type="password"], select, textarea {
+    display: block;
+    inline-size: 100%;
+    min-block-size: 3rem;
+    padding: 0.55rem 0.7rem;
+    border: 2px solid var(--steel-dark);
+    border-radius: 2px;
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    font-size: max(1rem, 1em);
+  }
+  textarea { min-block-size: 9rem; resize: vertical; }
+  [aria-invalid="true"] { border-color: var(--oxblood); border-width: 3px; }
+  .error { color: var(--oxblood); font-weight: 700; margin: 0.3rem 0 0; }
+  .error:empty { display: none; }
+  .with-toggle { display: flex; gap: 0.5rem; }
+  .with-toggle input { flex: 1; min-inline-size: 0; }
+
+  .status-line { min-block-size: 1.5rem; font-weight: 700; margin: 0.75rem 0 0; }
+  .status-line[data-kind="good"] { color: var(--good); }
+  .status-line[data-kind="bad"] { color: var(--oxblood); }
+
+  /* ---------- storage meter ---------- */
+  .meter { display: grid; gap: 0.3rem; margin-block-end: 1rem; font-size: 0.9375rem; }
+  progress { inline-size: 100%; block-size: 0.75rem; accent-color: var(--oxblood); }
+
+  /* ---------- list of pieces ---------- */
+  .list { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.75rem; }
+  .row {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 0.5rem 0.9rem;
+    align-items: start;
+    padding: 0.75rem;
+    background: var(--steel-bright);
+    border: 2px solid var(--steel-dark);
+    border-radius: 2px;
+  }
+  .row .thumb { inline-size: 4.5rem; aspect-ratio: 4 / 5; object-fit: cover; background: var(--steel-dark); display: block; }
+  .row .thumb.none { display: grid; place-items: center; color: var(--steel); font-size: 0.75rem; text-align: center; }
+  .row .name { font-weight: 700; overflow-wrap: anywhere; }
+  .row .controls { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block-start: 0.5rem; }
+  .row .controls select { inline-size: auto; flex: 1 1 10rem; }
+
+  /* ---------- photos and videos in the editor ---------- */
+  .media { list-style: none; margin: 0.6rem 0 0; padding: 0; display: grid; gap: 0.6rem; }
+  .media li {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 0.4rem 0.8rem;
+    align-items: center;
+    padding: 0.5rem;
+    background: #fff;
+    border: 2px solid var(--steel-dark);
+    border-radius: 2px;
+  }
+  .media .thumb { inline-size: 4.5rem; aspect-ratio: 1; object-fit: cover; background: var(--steel-dark); display: block; }
+  .media .what { font-size: 0.9375rem; overflow-wrap: anywhere; }
+  .media .moves { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .media .moves button { min-block-size: 2.75rem; padding: 0.3rem 0.7rem; font-size: 0.9375rem; }
+  .cover-tag { display: inline-block; padding: 0 0.4rem; background: var(--straw); font-weight: 700; font-size: 0.8125rem; border-radius: 2px; }
+
+  .buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-block-start: 1rem; }
+  .confirm { margin-block-start: 0.9rem; padding: 0.8rem; border: 2px dashed var(--oxblood); border-radius: 2px; }
+  .confirm p { font-weight: 700; }
+  hr { border: 0; border-block-start: 2px solid var(--steel-dark); margin: 1.5rem 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <h1>Shop admin</h1>
+    <nav>
+      <a href="shop.html">View the shop</a>
+      <button type="button" id="sign-out" hidden>Sign out</button>
+    </nav>
+  </header>
+
+  <!-- shop not connected to a back end yet -->
+  <section class="panel" id="view-setup" hidden>
+    <h2>Not connected yet</h2>
+    <p>The shop doesn't have its back end switched on. Once it's connected, this is where you log in to add pieces.</p>
+  </section>
+
+  <section class="panel" id="view-loading">
+    <p>Checking your login…</p>
+  </section>
+
+  <!-- log in -->
+  <section class="panel" id="view-login" hidden>
+    <h2>Log in</h2>
+    <form id="login-form" novalidate>
+      <div class="field">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" name="email" required autocomplete="email" inputmode="email"
+               autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next">
+      </div>
+      <div class="field">
+        <label for="login-password">Password</label>
+        <div class="with-toggle">
+          <input type="password" id="login-password" name="password" required autocomplete="current-password" enterkeyhint="go">
+          <button type="button" id="show-password" aria-pressed="false">Show</button>
+        </div>
+      </div>
+      <button type="submit" class="main" id="login-submit">Log in</button>
+      <p class="status-line" id="login-status" role="status"></p>
+    </form>
+  </section>
+
+  <!-- logged in, but not on the admin list -->
+  <section class="panel" id="view-denied" hidden>
+    <h2>This login can't edit the shop</h2>
+    <p>You're logged in, but this login isn't on the shop's admin list. Sign out and use the owner's login.</p>
+  </section>
+
+  <!-- the list -->
+  <section id="view-list" hidden>
+    <div class="meter">
+      <label for="storage-bar" id="storage-text">Storage used</label>
+      <progress id="storage-bar" max="100" value="0"></progress>
+    </div>
+    <button type="button" class="main" id="add-piece">Add a piece</button>
+    <p class="status-line" id="list-status" role="status"></p>
+    <ul class="list" id="list"></ul>
+    <p id="list-empty" hidden>No pieces yet. Press "Add a piece" to put the first one up.</p>
+  </section>
+
+  <!-- add or edit one piece -->
+  <section class="panel" id="view-edit" hidden>
+    <h2 id="edit-heading">Add a piece</h2>
+    <form id="edit-form" novalidate>
+      <div class="field">
+        <label for="f-title">Title (required)</label>
+        <input type="text" id="f-title" name="title" required maxlength="120" autocomplete="off" enterkeyhint="next" aria-describedby="f-title-error">
+        <p class="error" id="f-title-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="f-description">Description</label>
+        <span class="hint" id="f-description-hint">What it is, what it's made of, how big it is. Line breaks are kept.</span>
+        <textarea id="f-description" name="description" maxlength="5000" aria-describedby="f-description-hint"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="f-price">Price in pounds</label>
+        <span class="hint" id="f-price-hint">Numbers only, like 45 or 45.50. Leave it empty to show "Price on request".</span>
+        <input type="text" id="f-price" name="price" inputmode="decimal" autocomplete="off" aria-describedby="f-price-hint f-price-error">
+        <p class="error" id="f-price-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="f-status">Status</label>
+        <span class="hint" id="f-status-hint">Draft is hidden from the shop. Everything else shows.</span>
+        <select id="f-status" name="status" aria-describedby="f-status-hint"></select>
+      </div>
+
+      <div class="field">
+        <label for="f-files">Photos and videos</label>
+        <span class="hint" id="f-files-hint">The first one is the cover. Photos are shrunk for you. Videos must be 50 MB or less, so keep them to short clips.</span>
+        <input type="file" id="f-files" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime" multiple aria-describedby="f-files-hint f-files-error">
+        <p class="error" id="f-files-error" aria-live="polite"></p>
+        <ul class="media" id="media-list"></ul>
+      </div>
+
+      <div class="buttons">
+        <button type="submit" class="main" id="save">Save</button>
+        <button type="button" id="cancel">Cancel</button>
+      </div>
+      <p class="status-line" id="edit-status" role="status"></p>
+
+      <div class="confirm" id="discard-confirm" hidden>
+        <p id="discard-text">You have changes that aren't saved. Throw them away?</p>
+        <div class="buttons">
+          <button type="button" id="discard-no">Keep editing</button>
+          <button type="button" class="danger sure" id="discard-yes" aria-describedby="discard-text">Throw them away</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="delete-zone" hidden>
+      <hr>
+      <button type="button" class="danger" id="delete">Delete this piece</button>
+      <div class="confirm" id="delete-confirm" hidden>
+        <p id="delete-text">Delete it for good? Its photos and videos are deleted too. This can't be undone.</p>
+        <div class="buttons">
+          <button type="button" id="delete-no">Keep it</button>
+          <button type="button" class="danger sure" id="delete-yes" aria-describedby="delete-text">Delete for good</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="vendor/supabase.js"></script>
+<script src="shop-config.js"></script>
+<script src="shop-common.js"></script>
+<script>
+(() => {
+  'use strict';
+  const S = window.Shop;
+  const $ = (id) => document.getElementById(id);
+  const views = ['view-setup', 'view-loading', 'view-login', 'view-denied', 'view-list', 'view-edit'];
+  const show = (name) => views.forEach((v) => { $(v).hidden = v !== name; });
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function tell(id, text, kind) {
+    const node = $(id);
+    node.textContent = text || '';
+    if (kind) node.dataset.kind = kind; else delete node.dataset.kind;
+  }
+
+  const client = S.connect();
+  let pieces = [];
+  let editing = null;      // the piece being edited, or null for a new one
+  let media = [];          // the editor's working list of photos and videos
+  let removed = [];        // stored files to delete once the save goes through
+  let dirty = false;
+  let busy = false;
+
+  if (!client) { show('view-setup'); return; }
+
+  // ---------------------------------------------------------------- login
+
+  $('show-password').addEventListener('click', () => {
+    const input = $('login-password');
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    $('show-password').setAttribute('aria-pressed', String(!showing));
+    $('show-password').textContent = showing ? 'Show' : 'Hide';
+  });
+
+  $('login-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const email = $('login-email').value.trim();
+    const password = $('login-password').value;
+    if (!email || !password) { tell('login-status', 'Type your email and your password.', 'bad'); return; }
+    $('login-submit').disabled = true;
+    tell('login-status', 'Logging in…');
+    const { error } = await client.auth.signInWithPassword({ email, password });
+    $('login-submit').disabled = false;
+    if (error) {
+      const wrong = /invalid login credentials/i.test(error.message || '');
+      tell('login-status', wrong ? "That email or password isn't right." : 'Could not log in: ' + error.message, 'bad');
+      return;
+    }
+    tell('login-status', '');
+    $('login-password').value = '';
+    await enter();
+  });
+
+  $('sign-out').addEventListener('click', async () => {
+    await client.auth.signOut();
+    $('sign-out').hidden = true;
+    show('view-login');
+  });
+
+  async function enter() {
+    show('view-loading');
+    const { data } = await client.auth.getSession();
+    if (!data || !data.session) { $('sign-out').hidden = true; show('view-login'); return; }
+    $('sign-out').hidden = false;
+    const { data: isAdmin, error } = await client.rpc('is_admin');
+    if (error || isAdmin !== true) { show('view-denied'); return; }
+    await loadList();
+  }
+
+  // ---------------------------------------------------------------- list
+
+  function coverOf(piece) {
+    const first = (piece.media || [])[0];
+    if (!first) return '';
+    if (first.kind === 'video') return first.poster ? S.mediaUrl(first.poster) : '';
+    return S.mediaUrl(first.thumb || first.path);
+  }
+
+  function storedBytes() {
+    let total = 0;
+    for (const piece of pieces) for (const item of piece.media || []) total += item.size || 0;
+    return total;
+  }
+
+  function renderMeter() {
+    const used = storedBytes();
+    $('storage-bar').value = Math.min(100, Math.round((used / S.STORAGE_BYTES) * 100));
+    $('storage-text').textContent = `Storage used: ${S.formatBytes(used)} of 1,000 MB`;
+  }
+
+  function statusOptions(select, value) {
+    select.replaceChildren(...S.STATUSES.map((s) => {
+      const option = el('option', '', s.id === 'draft' ? 'Draft (hidden)' : s.label);
+      option.value = s.id;
+      return option;
+    }));
+    select.value = value;
+  }
+
+  function renderList() {
+    $('list').replaceChildren(...pieces.map((piece) => {
+      const li = el('li', 'row');
+      const src = coverOf(piece);
+      let thumb;
+      if (src) { thumb = el('img', 'thumb'); thumb.src = src; thumb.alt = ''; thumb.loading = 'lazy'; }
+      else thumb = el('div', 'thumb none', 'No photo');
+
+      const info = el('div');
+      info.append(el('div', 'name', piece.title), el('div', '', S.formatPrice(piece.price_pence)));
+
+      const controls = el('div', 'controls');
+      const select = el('select');
+      select.setAttribute('aria-label', `Status of ${piece.title}`);
+      statusOptions(select, piece.status);
+      select.addEventListener('change', () => quickStatus(piece, select));
+      const edit = el('button', '', 'Edit');
+      edit.type = 'button';
+      edit.setAttribute('aria-label', `Edit ${piece.title}`);
+      edit.addEventListener('click', () => openEditor(piece));
+      controls.append(select, edit);
+      info.append(controls);
+
+      li.append(thumb, info);
+      return li;
+    }));
+    $('list-empty').hidden = pieces.length > 0;
+    renderMeter();
+  }
+
+  async function loadList() {
+    const { data, error } = await client.from('pieces').select('*').order('created_at', { ascending: false });
+    if (error) { show('view-list'); tell('list-status', 'Could not load your pieces: ' + error.message, 'bad'); return; }
+    pieces = data || [];
+    renderList();
+    show('view-list');
+  }
+
+  async function quickStatus(piece, select) {
+    const before = piece.status;
+    const next = select.value;
+    select.disabled = true;
+    const { error } = await client.from('pieces').update({ status: next }).eq('id', piece.id);
+    select.disabled = false;
+    if (error) {
+      select.value = before;
+      tell('list-status', `Could not change "${piece.title}": ${error.message}`, 'bad');
+      return;
+    }
+    piece.status = next;
+    tell('list-status', `"${piece.title}" is now ${S.statusLabel(next)}.`, 'good');
+  }
+
+  $('add-piece').addEventListener('click', () => openEditor(null));
+
+  // ---------------------------------------------------------------- editor
+
+  function openEditor(piece) {
+    editing = piece;
+    media = piece ? (piece.media || []).map((item) => ({ ...item })) : [];
+    removed = [];
+    dirty = false;
+    $('edit-heading').textContent = piece ? `Edit "${piece.title}"` : 'Add a piece';
+    $('f-title').value = piece ? piece.title : '';
+    $('f-description').value = piece ? piece.description || '' : '';
+    $('f-price').value = piece && piece.price_pence !== null ? S.formatPrice(piece.price_pence).replace(/[£,]/g, '') : '';
+    statusOptions($('f-status'), piece ? piece.status : 'draft');
+    $('f-files').value = '';
+    for (const id of ['f-title-error', 'f-price-error', 'f-files-error']) $(id).textContent = '';
+    for (const id of ['f-title', 'f-price']) $(id).removeAttribute('aria-invalid');
+    tell('edit-status', '');
+    $('discard-confirm').hidden = true;
+    $('delete-confirm').hidden = true;
+    $('delete-zone').hidden = !piece;
+    renderMedia();
+    show('view-edit');
+    $('f-title').focus();
+  }
+
+  function closeEditor() {
+    for (const item of media) if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+    editing = null; media = []; removed = []; dirty = false;
+    renderList();
+    show('view-list');
+  }
+
+  $('edit-form').addEventListener('input', (event) => {
+    dirty = true;
+    // A field's complaint goes away as soon as you start fixing it.
+    const error = event.target.id && $(event.target.id + '-error');
+    if (error) { error.textContent = ''; event.target.removeAttribute('aria-invalid'); }
+  });
+
+  function previewOf(item) {
+    if (item.file) return item.kind === 'image' ? item.previewUrl : '';
+    if (item.kind === 'video') return item.poster ? S.mediaUrl(item.poster) : '';
+    return S.mediaUrl(item.thumb || item.path);
+  }
+
+  function renderMedia() {
+    $('media-list').replaceChildren(...media.map((item, i) => {
+      const li = el('li');
+      const src = previewOf(item);
+      let thumb;
+      if (src) { thumb = el('img', 'thumb'); thumb.src = src; thumb.alt = ''; }
+      else thumb = el('div', 'thumb');
+
+      const what = el('div', 'what');
+      const kind = item.kind === 'video' ? 'Video' : 'Photo';
+      what.append(el('strong', '', `${kind} ${i + 1}`));
+      if (i === 0) { what.append(' '); what.append(el('span', 'cover-tag', 'Cover')); }
+      what.append(el('div', '', item.file ? `${item.file.name} (new, ${S.formatBytes(item.file.size)})` : S.formatBytes(item.size || 0)));
+
+      const moves = el('div', 'moves');
+      const up = el('button', '', 'Move earlier'); up.type = 'button'; up.disabled = i === 0;
+      up.setAttribute('aria-label', `Move ${kind.toLowerCase()} ${i + 1} earlier`);
+      up.addEventListener('click', () => move(i, -1));
+      const down = el('button', '', 'Move later'); down.type = 'button'; down.disabled = i === media.length - 1;
+      down.setAttribute('aria-label', `Move ${kind.toLowerCase()} ${i + 1} later`);
+      down.addEventListener('click', () => move(i, 1));
+      const remove = el('button', 'danger', 'Remove'); remove.type = 'button';
+      remove.setAttribute('aria-label', `Remove ${kind.toLowerCase()} ${i + 1}`);
+      remove.addEventListener('click', () => drop(i));
+      moves.append(up, down, remove);
+
+      li.append(thumb, what, moves);
+      return li;
+    }));
+  }
+
+  function move(index, by) {
+    const target = index + by;
+    if (target < 0 || target >= media.length) return;
+    [media[index], media[target]] = [media[target], media[index]];
+    dirty = true;
+    renderMedia();
+  }
+
+  function drop(index) {
+    const [item] = media.splice(index, 1);
+    if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+    if (!item.file) removed.push(...[item.path, item.thumb, item.poster].filter(Boolean));
+    dirty = true;
+    renderMedia();
+  }
+
+  $('f-files').addEventListener('change', () => {
+    const problems = [];
+    for (const file of $('f-files').files) {
+      const isImage = /^image\/(jpeg|png|webp)$/.test(file.type);
+      const isVideo = /^video\/(mp4|webm|quicktime)$/.test(file.type);
+      if (!isImage && !isVideo) { problems.push(`"${file.name}" isn't a photo or video this shop can show. Use JPG, PNG, WebP, MP4, WebM or MOV.`); continue; }
+      if (isVideo && file.size > S.MAX_FILE_BYTES) { problems.push(`"${file.name}" is ${S.formatBytes(file.size)}. The limit is 50 MB. Trim it shorter and try again.`); continue; }
+      media.push({ file, kind: isImage ? 'image' : 'video', previewUrl: isImage ? URL.createObjectURL(file) : '' });
+      dirty = true;
+    }
+    $('f-files').value = '';
+    $('f-files-error').textContent = problems.join(' ');
+    renderMedia();
+  });
+
+  // ----- turning a picked file into something small enough to store -----
+
+  async function shrinkPhoto(file, longestSide, quality) {
+    let bitmap;
+    try { bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+    catch { throw new Error(`Couldn't read "${file.name}". Save it as a JPG and try again.`); }
+    const scale = Math.min(1, longestSide / Math.max(bitmap.width, bitmap.height));
+    const w = Math.max(1, Math.round(bitmap.width * scale));
+    const h = Math.max(1, Math.round(bitmap.height * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
+    bitmap.close();
+    // Re-drawing the photo also drops the hidden data phones attach, such as where it was taken.
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality));
+    if (!blob) throw new Error(`Couldn't shrink "${file.name}".`);
+    return { blob, w, h };
+  }
+
+  // A still frame from a video, for the shop grid. Returns null if the browser can't make one.
+  function videoPoster(file) {
+    return new Promise((resolve) => {
+      const video = document.createElement('video');
+      const url = URL.createObjectURL(file);
+      let done = false;
+      const finish = (result) => { if (done) return; done = true; clearTimeout(timer); URL.revokeObjectURL(url); resolve(result); };
+      const timer = setTimeout(() => finish(null), 8000);
+      video.muted = true; video.playsInline = true; video.preload = 'auto';
+      video.addEventListener('error', () => finish(null));
+      video.addEventListener('loadeddata', () => { video.currentTime = Math.min(0.5, (video.duration || 1) / 2); });
+      video.addEventListener('seeked', () => {
+        try {
+          const scale = Math.min(1, 700 / Math.max(video.videoWidth, video.videoHeight));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(video.videoWidth * scale));
+          canvas.height = Math.max(1, Math.round(video.videoHeight * scale));
+          canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => finish(blob ? { blob, w: video.videoWidth, h: video.videoHeight } : null), 'image/jpeg', 0.8);
+        } catch { finish(null); }
+      });
+      video.src = url;
+    });
+  }
+
+  async function put(path, blob, contentType) {
+    const { error } = await client.storage.from(S.BUCKET).upload(path, blob, { contentType, cacheControl: '31536000', upsert: false });
+    if (error) throw new Error('Upload failed: ' + error.message);
+  }
+
+  // Uploads one newly picked file and returns the record the shop stores for it.
+  async function store(pieceId, item, uploaded) {
+    const name = crypto.randomUUID();
+    if (item.kind === 'image') {
+      const full = await shrinkPhoto(item.file, 2000, 0.86);
+      const small = await shrinkPhoto(item.file, 700, 0.8);
+      const path = `${pieceId}/${name}.jpg`, thumb = `${pieceId}/${name}-small.jpg`;
+      await put(path, full.blob, 'image/jpeg'); uploaded.push(path);
+      await put(thumb, small.blob, 'image/jpeg'); uploaded.push(thumb);
+      return { kind: 'image', path, thumb, w: full.w, h: full.h, size: full.blob.size + small.blob.size };
+    }
+    const extension = item.file.type === 'video/webm' ? 'webm' : item.file.type === 'video/quicktime' ? 'mov' : 'mp4';
+    const path = `${pieceId}/${name}.${extension}`;
+    const frame = await videoPoster(item.file);
+    await put(path, item.file, item.file.type); uploaded.push(path);
+    const record = { kind: 'video', path, size: item.file.size };
+    if (frame) {
+      const poster = `${pieceId}/${name}-poster.jpg`;
+      await put(poster, frame.blob, 'image/jpeg'); uploaded.push(poster);
+      record.poster = poster; record.w = frame.w; record.h = frame.h; record.size += frame.blob.size;
+    }
+    return record;
+  }
+
+  function setBusy(on) {
+    busy = on;
+    for (const id of ['save', 'cancel', 'delete', 'f-files']) $(id).disabled = on;
+  }
+
+  $('edit-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (busy) return;
+
+    const title = $('f-title').value.trim();
+    const price = S.parsePrice($('f-price').value);
+    const titleBad = !title;
+    const priceBad = Number.isNaN(price);
+    $('f-title-error').textContent = titleBad ? 'Give the piece a title.' : '';
+    $('f-price-error').textContent = priceBad ? 'Type the price as a number, like 45 or 45.50. No letters.' : '';
+    titleBad ? $('f-title').setAttribute('aria-invalid', 'true') : $('f-title').removeAttribute('aria-invalid');
+    priceBad ? $('f-price').setAttribute('aria-invalid', 'true') : $('f-price').removeAttribute('aria-invalid');
+    if (titleBad) { $('f-title').focus(); return; }
+    if (priceBad) { $('f-price').focus(); return; }
+
+    const used = storedBytes();
+    const incoming = media.filter((m) => m.file && m.kind === 'video').reduce((sum, m) => sum + m.file.size, 0);
+    if (used + incoming > S.STORAGE_BYTES) {
+      tell('edit-status', 'Not enough storage left for these videos. Delete an old video first.', 'bad');
+      return;
+    }
+
+    setBusy(true);
+    const pieceId = editing ? editing.id : crypto.randomUUID();
+    const uploaded = [];
+    try {
+      const fresh = media.filter((m) => m.file).length;
+      let n = 0;
+      const records = [];
+      for (const item of media) {
+        if (!item.file) { records.push(item); continue; }
+        n += 1;
+        tell('edit-status', `Uploading ${n} of ${fresh}…`);
+        records.push(await store(pieceId, item, uploaded));
+      }
+      tell('edit-status', 'Saving…');
+      const row = { title, description: $('f-description').value.trim(), price_pence: price, status: $('f-status').value, media: records };
+      const query = editing
+        ? client.from('pieces').update(row).eq('id', pieceId).select().single()
+        : client.from('pieces').insert({ id: pieceId, ...row }).select().single();
+      const { data, error } = await query;
+      if (error) throw new Error('Could not save: ' + error.message);
+
+      if (removed.length) await client.storage.from(S.BUCKET).remove(removed);
+      if (editing) pieces[pieces.indexOf(editing)] = data; else pieces.unshift(data);
+      const label = S.statusLabel(data.status);
+      setBusy(false);
+      closeEditor();
+      tell('list-status', `Saved "${data.title}" as ${label}.`, 'good');
+    } catch (problem) {
+      // Don't leave half-uploaded files behind.
+      if (uploaded.length) await client.storage.from(S.BUCKET).remove(uploaded).catch(() => {});
+      setBusy(false);
+      tell('edit-status', problem.message || String(problem), 'bad');
+    }
+  });
+
+  $('cancel').addEventListener('click', () => {
+    if (!dirty) { closeEditor(); return; }
+    $('discard-confirm').hidden = false;
+    $('discard-no').focus();
+  });
+  $('discard-no').addEventListener('click', () => { $('discard-confirm').hidden = true; $('cancel').focus(); });
+  $('discard-yes').addEventListener('click', () => closeEditor());
+
+  $('delete').addEventListener('click', () => { $('delete-confirm').hidden = false; $('delete-no').focus(); });
+  $('delete-no').addEventListener('click', () => { $('delete-confirm').hidden = true; $('delete').focus(); });
+  $('delete-yes').addEventListener('click', async () => {
+    if (busy || !editing) return;
+    setBusy(true);
+    const piece = editing;
+    const files = (piece.media || []).flatMap((item) => [item.path, item.thumb, item.poster]).filter(Boolean);
+    const { error } = await client.from('pieces').delete().eq('id', piece.id);
+    if (error) { setBusy(false); tell('edit-status', 'Could not delete: ' + error.message, 'bad'); return; }
+    if (files.length) await client.storage.from(S.BUCKET).remove(files);
+    pieces = pieces.filter((p) => p !== piece);
+    setBusy(false);
+    closeEditor();
+    tell('list-status', `Deleted "${piece.title}".`, 'good');
+  });
+
+  // Warn before closing the tab with unsaved changes.
+  window.addEventListener('beforeunload', (event) => { if (dirty || busy) event.preventDefault(); });
+
+  enter();
+})();
+</script>
+</body>
+</html>
