@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to buy | yanderebait</title>
+<meta name="description" content="How to buy a hand-forged display blade or cosplay prop from yanderebait. Adults only, with an ID check before payment and again at handover.">
+<meta name="theme-color" content="#CFE6D3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@800&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Same colours as the links page. Change them in both files together. */
+    --page: #CFE6D3;
+    --page-deep: #A7CDAE;
+    --oxblood: #5A0F1E;
+    --steel: #CDD2D7;
+    --steel-bright: #EEF1F3;
+    --steel-dark: #2A3140;
+    --steel-mid: #55607A;
+    --ink: #1F2328;
+    --copper: #B0683A;
+    --copper-dark: #7C4322;
+
+    /* The colours steel turns as it is tempered, coolest first. One per step. */
+    --temper-1: #D9A441;
+    --temper-2: #B5651D;
+    --temper-3: #6B3FA0;
+    --temper-4: #2F6FB5;
+    --temper-5: #55607A;
+
+    --display: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { background: var(--page); scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    min-block-size: 100svh;
+    padding: clamp(1.25rem, 5vw, 3.5rem) clamp(1.1rem, 6vw, 5rem) 3rem;
+    font-family: "Zen Kaku Gothic New", "Hiragino Sans", "Segoe UI", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    color: var(--oxblood);
+  }
+
+  a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: 0.18em; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--oxblood); outline-offset: 3px; }
+
+  .page {
+    max-inline-size: 76rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "short" "main" "foot";
+  }
+  .head { grid-area: head; }
+  .short { grid-area: short; }
+  .guide { grid-area: main; }
+  footer { grid-area: foot; }
+
+  @media (min-width: 62rem) {
+    .page {
+      grid-template-columns: minmax(0, 42rem) minmax(16rem, 22rem);
+      grid-template-areas: "head head" "main short" "foot foot";
+      column-gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+    }
+    .short { position: sticky; inset-block-start: 2rem; }
+  }
+
+  /* ---------- top ---------- */
+
+  .home {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+    border-block-end: 3px solid var(--copper);
+  }
+  .home:hover { border-block-end-color: var(--oxblood); }
+
+  h1 {
+    margin: 1.5rem 0 0;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2.6rem, 12vw, 5.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+  }
+
+  .lede { margin: 1.1rem 0 0; max-inline-size: 36rem; font-size: 1.125rem; }
+
+  /* Unforged stock: same dashed block the links page uses for "not open yet". */
+  .billet {
+    margin: 1.5rem 0 0;
+    max-inline-size: 36rem;
+    padding: 0.8rem 1rem;
+    border: 2px dashed var(--oxblood);
+    border-radius: 2px;
+  }
+  .billet strong { font-weight: 700; }
+
+  /* ---------- the short version ---------- */
+
+  .short {
+    margin: 2rem 0 0;
+    padding: 1.1rem 1.25rem 1.25rem;
+    background: var(--steel-dark);
+    color: #F1F3F6;
+    border-radius: 2px;
+    border-inline-start: 0.5rem solid var(--copper);
+  }
+  .short h2 { margin: 0 0 0.6rem; font-family: var(--display); font-weight: 800; font-size: 1.5rem; line-height: 1.15; }
+  .short ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.55rem; }
+  .short li { padding-inline-start: 1.1rem; position: relative; }
+  .short li::before {
+    content: "";
+    position: absolute;
+    inset: 0.62em auto auto 0;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    background: var(--temper-1);
+    rotate: 45deg;
+  }
+
+  /* ---------- the guide ---------- */
+
+  .guide { margin: 0; }
+  .guide > section { margin-block-start: clamp(2.25rem, 6vw, 3.25rem); }
+
+  h2 {
+    margin: 0 0 0.6rem;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(1.7rem, 6vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .guide p { margin: 0 0 0.8rem; max-inline-size: 38rem; }
+  .guide p:last-child { margin-block-end: 0; }
+
+  /* The steps hang off a steel rail, like the knives on the links page. */
+  .steps {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0.25rem 0 0.25rem 0.9rem;
+    border-inline-start: 0.4rem solid var(--steel-dark);
+    box-shadow: -0.25rem 0 0 var(--page-deep);
+    display: grid;
+    gap: 0.9rem;
+    counter-reset: step;
+  }
+
+  .step {
+    counter-increment: step;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 1rem;
+    padding: 1rem 1.25rem 1.35rem 1rem;
+    background: var(--steel);
+    color: var(--ink);
+    /* one corner ground off, like the point of a blade */
+    clip-path: polygon(0 0, calc(100% - 1.75rem) 0, 100% 1.75rem, 100% 100%, 0 100%);
+  }
+  /* the edge, in that step's temper colour */
+  .step::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    block-size: 0.5rem;
+    background: var(--edge);
+  }
+  .step:nth-child(1) { --edge: var(--temper-1); }
+  .step:nth-child(2) { --edge: var(--temper-2); }
+  .step:nth-child(3) { --edge: var(--temper-3); }
+  .step:nth-child(4) { --edge: var(--temper-4); }
+  .step:nth-child(5) { --edge: var(--temper-5); }
+
+  .step::before {
+    content: counter(step);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 2.75rem;
+    line-height: 0.9;
+    color: var(--steel-dark);
+    min-inline-size: 1.6rem;
+  }
+  .step h3 { margin: 0 0 0.3rem; font-size: 1.25rem; font-weight: 700; line-height: 1.25; padding-inline-end: 1.25rem; }
+  .step p { margin: 0 0 0.6rem; }
+  .step p:last-child, .step ul:last-child { margin-block-end: 0; }
+  .step ul { margin: 0 0 0.6rem; padding-inline-start: 1.1rem; display: grid; gap: 0.35rem; }
+
+  .copy { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  #discord-name { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 1rem; font-weight: 700; }
+  .copy-button {
+    min-block-size: 2rem;
+    padding: 0.2rem 0.7rem;
+    border: 2px solid var(--ink);
+    border-radius: 2px;
+    background: var(--steel-bright);
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .copy-button:hover { background: #fff; }
+  .copy-button[data-copied] { border-color: #1E6B3A; }
+  .tip-msg { font-size: 0.9375rem; font-weight: 700; }
+
+  footer { margin-block-start: 3rem; font-size: 0.9375rem; max-inline-size: 38rem; }
+  footer p { margin: 0 0 0.4rem; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="head">
+    <a class="home" href="./">yanderebait</a>
+    <h1>How to buy</h1>
+    <p class="lede">I make display blades and cosplay props by hand. There's no checkout button. Every piece is sold person to person, to adults only, after an ID check. Here's how it works.</p>
+    <p class="billet"><strong>Seen something you want?</strong> Everything I've made is in the <a href="shop.html">shop</a>. New pieces also go up on <a href="https://x.com/yanderebait_" rel="me noopener">X</a> and <a href="https://www.instagram.com/yanderebait/" rel="me noopener">Instagram</a>.</p>
+  </header>
+
+  <aside class="short" aria-labelledby="short-title">
+    <h2 id="short-title">The short version</h2>
+    <ul>
+      <li>You must be 18 or over. No exceptions.</li>
+      <li>I check your ID before you pay, and again when you get it.</li>
+      <li>It goes into your hands. Not a neighbour's, not a doorstep, not a locker.</li>
+      <li>UK only for now.</li>
+      <li>These are display pieces. They are not tools and they are not toys.</li>
+    </ul>
+  </aside>
+
+  <main class="guide">
+    <section aria-labelledby="what-title">
+      <h2 id="what-title">What I make</h2>
+      <p>Display pieces and cosplay props, forged by hand from mild steel. They're made to sit on a stand or a shelf and look good. They are not built to be used.</p>
+      <p>Each one is made by hand, so no two are the same.</p>
+      <p>Going to a con? Steel won't get past the door. Ask me about a con-safe copy to carry instead. It costs extra.</p>
+    </section>
+
+    <section aria-labelledby="steps-title">
+      <h2 id="steps-title">The five steps</h2>
+      <ol class="steps">
+        <li class="step">
+          <div>
+            <h3>Message me</h3>
+            <p>Tell me which piece you want. Discord is quickest:</p>
+            <p class="copy">
+              <span id="discord-name">yanderebait_</span>
+              <button type="button" class="copy-button" data-copy="discord-name">Copy username</button>
+              <span class="tip-msg" role="status"></span>
+            </p>
+            <p>A DM on <a href="https://x.com/yanderebait_" rel="me noopener">X</a> or <a href="https://www.instagram.com/yanderebait/" rel="me noopener">Instagram</a> works too.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div>
+            <h3>Jump on a quick video call</h3>
+            <p>Two minutes. I need to see that you're a real person, and that the ID you're about to send is yours. Have your passport or UK driving licence in your hand.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div>
+            <h3>Send your ID</h3>
+            <p>A clear photo or scan of your passport or UK driving licence, plus a current photo of you.</p>
+            <p>If you're under 18, or you'd rather not send ID, I can't sell to you. No hard feelings.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div>
+            <h3>Pay</h3>
+            <p>Once the check is done, I'll confirm the price and how to pay.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div>
+            <h3>Get your blade</h3>
+            <p>Pick one:</p>
+            <ul>
+              <li>Collect it from me in London. Bring the same ID.</li>
+              <li>I deliver it myself, if you're within 20 miles of me. Same ID at the door.</li>
+              <li>An ID-checked 18+ delivery service. The driver checks your ID and hands it to you only.</li>
+            </ul>
+            <p>Whichever you pick, it goes to you and nobody else. Not a housemate, not a neighbour, not a safe place.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="id-title">
+      <h2 id="id-title">What happens to your ID</h2>
+      <p>I keep the copy for 12 months, as proof that I checked. Then I delete it.</p>
+      <p>It's used for the age check and nothing else. I don't share it with anyone, unless the police or Trading Standards have a legal right to ask for it.</p>
+    </section>
+
+    <section aria-labelledby="after-title">
+      <h2 id="after-title">Once it's yours</h2>
+      <p>Take it home wrapped up, and keep it at home. Carrying a blade in public without a good reason is against the law in the UK, and that includes a display piece.</p>
+    </section>
+
+    <section aria-labelledby="no-title">
+      <h2 id="no-title">I can say no</h2>
+      <p>I can turn down any sale. If something feels off, I won't sell, and I don't have to explain why.</p>
+    </section>
+  </main>
+
+  <footer>
+    <!-- EDIT: the seller's legal name and address go on the line below before the first sale -->
+    <p>Sold by DraftCore, London.</p>
+    <p><a href="./">Back to all my links</a></p>
+  </footer>
+</div>
+
+<script>
+  // Copy the Discord username
+  document.addEventListener('click', async (event) => {
+    const button = event.target.closest('button[data-copy]');
+    if (!button) return;
+    const tip = button.nextElementSibling; // the role="status" message
+    const text = document.getElementById(button.dataset.copy).innerText.trim();
+    let ok = true;
+    try { await navigator.clipboard.writeText(text); } catch { ok = false; }
+    button.toggleAttribute('data-copied', ok);
+    tip.textContent = ok ? 'Copied' : 'Copy failed. Select it by hand.';
+    setTimeout(() => { button.removeAttribute('data-copied'); tip.textContent = ''; }, 2500);
+  });
+</script>
+</body>
+</html>
